@@ -6,7 +6,61 @@
         xmlns:local="clr-namespace:TestTask.Client"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+    <Grid Background="Azure" Margin="0,0,-8,1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="80"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <ListBox Grid.Column="0"  ItemsSource="{Binding ListItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedItem}" Margin="10,10,2,0" >
+                <ListBox.ItemTemplate >
+                    <DataTemplate >
+                        <StackPanel  Margin="5" >
+                            <TextBlock FontSize="18" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <Image Source="{Binding Path=Data, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="100" />
+                </Grid.RowDefinitions>
+
+                <ListBox Grid.Row="0"  Margin="2,10,10,0" >
+                    <TextBox FontSize="18" Text="{Binding SelectedItem.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="373" />
+                    <TextBox FontSize="18" Text="{Binding SelectedItem.Data, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="372" />
+                    <Image Source="{Binding  SelectedItem.Data, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   />
+                </ListBox>
+
+                <Grid Grid.Row="1" Margin="2, 0,10,0">
+                    <Button Command="{Binding ButtonClear.ClickCommand}" Content="{Binding ButtonClear.Title}" Height="45" Width="148" Margin="0,28,220,27" HorizontalAlignment="Right" />
+                    <Button Command="{Binding ButtonCreateNew.ClickCommand}" Content="{Binding ButtonCreateNew.Title}" Height="45" Width="148" Margin="214,28,0,27" HorizontalAlignment="Left" />
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"  Command="{Binding ButtonSeeAll.ClickCommand}" Content="{Binding ButtonSeeAll.Title}" Margin="20,20,20,20"/>
+            <Button Grid.Column="1" Command="{Binding ButtonDelete.ClickCommand}" Content="{Binding ButtonDelete.Title}" Margin="20,20,20,20"/>
+            <Button Grid.Column="2" Command="{Binding ButtonChange.ClickCommand}" Content="{Binding ButtonChange.Title}" Margin="20,20,20,20"/>
+            <Button Grid.Column="3" Command="{Binding ButtonSave.ClickCommand}" Content="{Binding ButtonSave.Title}" Margin="20,20,20,20"/>
+
+        </Grid>
     </Grid>
 </Window>
