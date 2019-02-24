@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using TestTask.Client.item;
 using TestTask.Client.model;
 
 namespace TestTask.Client
@@ -21,11 +22,11 @@ namespace TestTask.Client
 
         public ObservableCollection<PhoneModel> listItem { get; set; }
         public PhoneModel selectedPhone { get; set; }
-
-
+        
         public delegate void Action(ServerAPI serverAPI);
 
-        public delegate void ActionList();
+        public delegate PhoneModel ActionSend();
+
 
         public ViewModel()
         {
@@ -33,7 +34,9 @@ namespace TestTask.Client
 
             serverAPI = new ServerAPI();
             serverAPI.ListItem = ListItem;
-            serverAPI.selectItem = SelectedPhone;
+
+            ActionSend actioTemp = GetSelectedPhone;
+            serverAPI.selectItem = actioTemp;
 
             Action action = ServiceButton.ApiGetAll;
             ButtonSeeAll = new ButtonModel(action, serverAPI) { Title = "Get all" };
@@ -78,6 +81,12 @@ namespace TestTask.Client
                 selectedPhone = value;
                 OnPropertyChanged();
             }
+        }
+
+        public PhoneModel GetSelectedPhone()
+        {
+            return SelectedPhone;
+
         }
 
         public void NewItemButton(ServerAPI serverAPI)

@@ -9,20 +9,20 @@ namespace TestTask.Client.model
 {
     public class PhoneModel : INotifyPropertyChanged
     {
-        private string id;
+        private int id;
         private string name;
         private String data;
 
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public String Id
+        public int Id
         {
             get { return id; }
             set
             {
                 if (value == null)
-                    id = "";
+                    id = 0;
 
                 id = value;
                 OnPropertyChanged("Id");

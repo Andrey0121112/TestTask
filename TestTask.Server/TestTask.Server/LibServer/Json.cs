@@ -9,24 +9,22 @@ namespace TestTask.Server.LibServer
 {
     public class Json
     {
+        private static string nameDataBase = "Data.json";
+
         public static List<Phone> ReadJson(string path)
         {
-            using (StreamReader r = new StreamReader(path + "Data.json"))
+            using (StreamReader r = new StreamReader(path + nameDataBase))
             {
                 string json = r.ReadToEnd();
                 List<Phone> items = JsonConvert.DeserializeObject<List<Phone>>(json);
-
-                if (items.Count != 0)
-                    return items;
-                else
-                    return null;
+                return items; 
             }
         }
 
         public static void SaveJson(List<Phone> listData, string path)
         {
             var json = JsonConvert.SerializeObject(listData.ToArray());
-            File.WriteAllText(path + "Data.json", json);
+            File.WriteAllText(path + nameDataBase, json);
         }
     }
 }

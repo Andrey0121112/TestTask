@@ -11,12 +11,12 @@ namespace TestTask.Client.item
     {
         public static PhoneModel PhoneToPhoneModel(Phone phone)
         {
-            return new PhoneModel() { Id = phone.id.ToString(), Name = phone.name, Data = phone.data };
+            return new PhoneModel() { Id = phone.id, Name = phone.name, Data = phone.data };
         }
 
         public static Phone PhoneModelToPhone(PhoneModel phoneModel)
         {
-            return new Phone(int.Parse(phoneModel.Id), phoneModel.Name, phoneModel.Data);
+            return new Phone(phoneModel.Id, phoneModel.Name, phoneModel.Data);
         }
 
     }

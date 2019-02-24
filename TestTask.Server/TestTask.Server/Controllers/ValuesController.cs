@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TestTask.Server.LibServer;
 
 namespace TestTask.Server.Controllers
 {
@@ -12,34 +13,37 @@ namespace TestTask.Server.Controllers
     {
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public List<Phone> Get()
         {
-            return new string[] { "value1", "value2" };
+            return ProcesDataApi.GET_DataObjects();
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public Phone Get(int id)
         {
-            return "value";
+            return ProcesDataApi.GET_DataObject(id);
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Phone data)
         {
+            ProcesDataApi.POST_DataObject(data);
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] Phone  data)
         {
+            ProcesDataApi.PUT_DataObject(id, data);
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            ProcesDataApi.DELETE_DataObject(id);
         }
     }
 }

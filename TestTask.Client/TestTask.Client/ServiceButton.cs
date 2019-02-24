@@ -27,15 +27,18 @@ namespace TestTask.Client
                 System.Windows.MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show($"{response.ErrorMessage} ", "ERROR", System.Windows.MessageBoxButton.OK);
                 return;
             }
+            //queryResult.ForEach(x => serverAPI.ListItem.Add(Mapping.PhoneToPhoneModel(x))); // new Phone() { id = x.id.ToString(), Name = x.name, Data = ImageConvertData(x.data, x.name, serverAPI) }));
 
-            queryResult.ForEach(x => serverAPI.ListItem.Add(new PhoneModel() { Id = x.id.ToString(), Name = x.name, Data = ImageConvertData(x.data, x.name, serverAPI) }));
+            queryResult.ForEach(x => serverAPI.ListItem.Add( new PhoneModel() { Id = x.id, Name = x.name, Data = ImageConvertData(x.data, x.name, serverAPI) }));
         }
 
         public static void ApiDelete(ServerAPI serverAPI)
         {
+            PhoneModel phone = (PhoneModel)serverAPI.selectItem.DynamicInvoke();
+
             var client = new RestClient(serverAPI.API);
             var request = new RestRequest("api/values/{id}", Method.DELETE);
-            request.AddParameter("id", serverAPI.selectItem.Id, ParameterType.UrlSegment);
+            request.AddParameter("id", phone.Id, ParameterType.UrlSegment);
             var response = client.Execute(request);
 
             if (response.StatusCode != HttpStatusCode.OK)
@@ -47,15 +50,17 @@ namespace TestTask.Client
 
         public static void ApiSave(ServerAPI serverAPI)
         {
-            string dataImage = "image//" + Path.GetExtension(serverAPI.selectItem.Data) + ";base64,";
-            Byte[] bytes = File.ReadAllBytes(serverAPI.selectItem.Data);
+            PhoneModel phone = (PhoneModel)serverAPI.selectItem.DynamicInvoke();
+
+            string dataImage = "image//" + Path.GetExtension(phone.Data) + ";base64,";
+            Byte[] bytes = File.ReadAllBytes(phone.Data);
             String data = dataImage + Convert.ToBase64String(bytes);
 
 
             var client = new RestClient(serverAPI.API);
             var request = new RestRequest("api/values", Method.POST);
             request.RequestFormat = DataFormat.Json;
-            request.AddBody(new Phone() { name = serverAPI.selectItem.Name, data = data });
+            request.AddBody(new Phone(){ name = phone.Name, data = data });
             var response = client.Execute(request);
 
             if (response.StatusCode != HttpStatusCode.OK)
@@ -67,15 +72,16 @@ namespace TestTask.Client
 
         public static void ApiChange(ServerAPI serverAPI)
         {
-
-            string dataImage = "image//" + Path.GetExtension(serverAPI.selectItem.Data) + ";base64,";
-            Byte[] bytes = File.ReadAllBytes(serverAPI.selectItem.Data);
+            PhoneModel phone = (PhoneModel)serverAPI.selectItem.DynamicInvoke();
+            
+            string dataImage = "image//" + Path.GetExtension(phone.Data) + ";base64,";
+            Byte[] bytes = File.ReadAllBytes(phone.Data);
             String data = dataImage + Convert.ToBase64String(bytes);
 
             var client = new RestClient(serverAPI.API);
             var request = new RestRequest("api/values/{id}", Method.PUT) { RequestFormat = DataFormat.Json };
-            request.AddParameter("id", serverAPI.selectItem.Id, ParameterType.UrlSegment);
-            request.AddBody(new Phone() { id = int.Parse(serverAPI.selectItem.Id), name = serverAPI.selectItem.Name, data = data });
+            request.AddParameter("id", phone.Id, ParameterType.UrlSegment);
+            request.AddBody(new Phone() { id = phone.Id, name = phone.Name, data = data });
 
             var response = client.Execute(request);
 
